@@ -1,0 +1,33 @@
+<mat-card>
+  <mat-card-title>
+  create new team at the blockchain
+  </mat-card-title>
+  <br>
+  <mat-card-actions>
+    <mat-form-field>
+      <input matInput required placeholder="Team name" #name>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput required placeholder="Team Description URL or home page" #descr>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput required placeholder="External Id  in order to attach team at the backend" #externalId>
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <mat-select placeholder="Select sport type" #sp>
+        <mat-option required *ngFor="let sportType of sportTypes()" [value]="sp">
+          {{ sportType }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-button
+            (click)="addNewTeam(name.value, descr.value, externalId.value, sp.value.selected.viewValue); ">
+      Add new team
+    </button>
+  </mat-card-actions>
+</mat-card>

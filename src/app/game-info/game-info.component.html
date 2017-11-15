@@ -1,0 +1,29 @@
+<h1>MOCK DATA:</h1>
+<mat-card *ngFor="let game of games">
+  <mat-card-subtitle>Allow draw bets: {{game.allowDrawBets}} <br> Min bet amount: {{game.minBetAmount}} wei<br> was
+    refunded ?: {{game.wasRefund}}
+  </mat-card-subtitle>
+  <mat-card-title>
+    Starting date : {{game.startDate}}<br>Sport Type: {{game.sportType}}
+  </mat-card-title>
+  <mat-card-content>{{game.description}}</mat-card-content>
+  <mat-card-actions>
+    <app-bet-rate [game]="game">
+      <button mat-raised-button color="warn" (click)="openDialog(game)">Make bet</button>
+    </app-bet-rate>
+
+  </mat-card-actions>
+
+
+  <mat-card-footer>
+    <!--<mat-progress-bar mode="indeterminate"></mat-progress-bar>-->
+  </mat-card-footer>
+</mat-card>
+<mat-paginator [length]="page.length"
+               [pageSize]="page.pageSize"
+               [pageSizeOptions]="page.pageSizeOptions"
+               (page)="pageChanged($event)">
+</mat-paginator>
+
+
+
