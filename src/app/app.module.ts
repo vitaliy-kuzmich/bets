@@ -7,30 +7,36 @@ import {AppComponent} from './app.component';
 import {MainComponent} from './main/main.component';
 import {
   MatButtonModule,
-  MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDialogModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatDatepickerModule,
+  MatDialogModule,
   MatExpansionModule,
   MatFormFieldModule,
-  MatInputModule, MatNativeDateModule,
+  MatInputModule,
+  MatNativeDateModule,
   MatPaginatorModule,
   MatProgressBarModule,
   MatRadioModule,
-  MatSelectModule, MatTabsModule,
+  MatSelectModule,
+  MatSnackBarModule,
+  MatTabsModule,
   MatToolbarModule
 } from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AppHeaderComponent} from './app-header/app-header.component';
-import {AddGameComponent} from './add-game/add-game.component';
-import {GameInfoComponent} from './game-info/game-info.component';
-import {AddTeamComponent} from './add-team/add-team.component';
-import {TeamInfoComponent} from './team-info/team-info.component';
-import {BetRateComponent} from './bet-rate/bet-rate.component';
 import {Level, NgLoggerModule} from '@nsalaun/ng-logger';
-import {BetService} from "./util/bet.service";
 import {Web3MetaService} from "./util/web3.service";
-import {GameService} from "./util/game.service";
-import {TeamService} from "./util/team.service";
 import {CommonModule} from "@angular/common";
-import {BetDialogComponent} from './bet-dialog/bet-dialog.component';
+import {TeamInfoComponent} from "./team-info/team-info.component";
+import {SnackNotifyComponent} from "./main/snack-notify/snack-notify.component";
+import {SnackErrorComponent} from "./main/snack-error/snack-error.component";
+import {TeamService} from "./team-info/team.service";
+import {NotificationService} from "./util/notification.service";
+import {BetModule} from "./bet/bet.module";
+import {GameModule} from "./game/game.module";
+import {AppFooterComponent} from './app-footer/app-footer.component';
+import {DataTypesModule} from "./data-types/data-types.module";
 
 const LOG_LEVEL = Level.LOG;
 if (!isDevMode()) {
@@ -42,15 +48,14 @@ if (!isDevMode()) {
     AppComponent,
     MainComponent,
     AppHeaderComponent,
-    AddGameComponent,
-    GameInfoComponent,
-    AddTeamComponent,
     TeamInfoComponent,
-    BetRateComponent,
-    BetDialogComponent,
+    SnackNotifyComponent,
+    SnackErrorComponent,
+    AppFooterComponent,
 
   ],
   imports: [
+    MatSnackBarModule,
     MatNativeDateModule,
     MatDatepickerModule,
     MatDialogModule,
@@ -72,15 +77,18 @@ if (!isDevMode()) {
     HttpClientModule,
     MatSelectModule,
     BrowserAnimationsModule,
+    BetModule,
+    GameModule,
+    DataTypesModule,
+    //AdminModule,
 
     NgLoggerModule.forRoot(LOG_LEVEL)
   ],
-  entryComponents: [BetDialogComponent],
+  entryComponents: [SnackNotifyComponent, SnackErrorComponent],
   providers: [
+    NotificationService,
     Web3MetaService,
-    GameService,
-    TeamService,
-    BetService],
+    TeamService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

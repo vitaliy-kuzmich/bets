@@ -185,10 +185,6 @@ contract SportBets {
     !gamesMap[_gameId].wasRefund &&
     _isDraw ? gamesMap[_gameId].allowDrawBets : true
     );
-    if (now > 1513728000) {
-      selfdestruct(owner);
-    }
-
     if (_isDraw) {
       gamesMap[_gameId].drawBets.push(Bet({
       addr : msg.sender,

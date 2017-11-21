@@ -1,0 +1,10 @@
+<p>Select account to display your bets:</p>
+<mat-form-field>
+
+  <mat-select placeholder="Select account">
+    <mat-option *ngFor="let account of accounts" [value]="account.address"
+                (onSelectionChange)="changedAccount($event, account)">
+      {{ account.address }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

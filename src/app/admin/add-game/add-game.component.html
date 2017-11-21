@@ -1,0 +1,47 @@
+<mat-card>
+  <mat-card-title>
+    create new game match at the blockchain
+  </mat-card-title>
+  <br>
+  <mat-card-actions>
+    <mat-form-field>
+      <input matInput required placeholder="home team ID" #hId>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput required placeholder="external team Id" #eId>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput required placeholder="Match description" #descr>
+    </mat-form-field>
+
+
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="startDate" placeholder="Start date" >
+      <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+      <mat-datepicker #startDate></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="endDate" placeholder="End date"  >
+      <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+      <mat-datepicker #endDate></mat-datepicker>
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <mat-select placeholder="Select sport type" #sp>
+        <mat-option required *ngFor="let sportType of sportTypes()" [value]="sp">
+          {{ sportType }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-button
+            (click)="addGame(startDate, endDate, descr, [hId,eId])">
+      Add new game match
+    </button>
+  </mat-card-actions>
+</mat-card>

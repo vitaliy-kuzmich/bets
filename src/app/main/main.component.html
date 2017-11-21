@@ -1,19 +1,9 @@
-<app-app-header></app-app-header>
-<mat-form-field>
-
-  <mat-select placeholder="Select account">
-    <mat-option *ngFor="let account of accounts" [value]="account.address"
-                (onSelectionChange)="changedAccount($event, account)">
-      {{ account.address }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
 <br>
 <mat-tab-group>
   <mat-tab label="Games list">
-    <app-game-info></app-game-info>
+    <app-game-list></app-game-list>
   </mat-tab>
-  <mat-tab label="Admin panel">
+ <!-- <mat-tab label="Admin panel">
     CONTROLS BELOW MUST BE REMOVED IN PRODUCTION, IT EXISTS ONLY TO TEST/DEMO. THIS FUNCTIONALITY MUST BE MIGRATED TO
     THE
     ISOLATED BACKEND SERVICE.
@@ -23,9 +13,16 @@
     REAL DATA:
     <app-add-team></app-add-team>
     <app-add-game></app-add-game>
-  </mat-tab>
+  </mat-tab>-->
+
   <mat-tab label="My bets">
-    MOCK
+    <app-bet-list></app-bet-list>
+  </mat-tab>
+  <mat-tab label="Help">
+    INFO
+  </mat-tab>
+  <mat-tab label="Contact">
+    Contacts
   </mat-tab>
 </mat-tab-group>
 

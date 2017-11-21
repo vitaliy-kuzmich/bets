@@ -1,16 +1,18 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Web3MetaService} from "../util/web3.service";
-import {MatOptionSelectionChange} from "@angular/material";
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Subscription} from "rxjs/Subscription";
+import {Web3MetaService} from "../../util/web3.service";
 import {Logger} from "@nsalaun/ng-logger";
-import {Web3Account} from "../data-types/data-types.module";
+import {MatOptionSelectionChange} from "@angular/material";
+import {Web3Account} from "../../data-types/data-types.module";
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css'],
+  selector: 'app-bet-list',
+  templateUrl: './bet-list.component.html',
+  styleUrls: ['./bet-list.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
-export class MainComponent implements OnInit, OnDestroy {
+export class BetListComponent implements OnInit {
+
   accounts: Web3Account[];
   accountsSubs: Subscription;
 
@@ -33,4 +35,5 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.accountsSubs.unsubscribe();
   }
+
 }

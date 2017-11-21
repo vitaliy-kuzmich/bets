@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector: 'app-app-header',
@@ -6,11 +6,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./app-header.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppHeaderComponent implements OnInit {
+export class AppHeaderComponent {
+  headerLogo: string = "http://betlm.ag/wp-content/uploads/sites/3/2014/08/sports-betting-promos-header.jpg"
 
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

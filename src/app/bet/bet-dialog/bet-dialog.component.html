@@ -1,0 +1,35 @@
+<h1 mat-dialog-title>Fill bet data</h1>
+<div mat-dialog-content>
+  <p>Amount(min:{{localBet.game.minBetAmount}}):</p>
+  <mat-form-field>
+    <input matInput required tabindex="1" [(ngModel)]="localBet.amount">
+  </mat-form-field>
+  <br>
+  <p *ngIf="localBet.game.allowDrawBets; then chbx"></p>
+
+  <ng-template #chbx>
+    <mat-checkbox  [(ngModel)]="localBet.isDraw">Bet for draw result</mat-checkbox>
+  </ng-template>
+  <br>
+
+
+  <p *ngIf="!localBet.isDraw; then slctr"></p>
+  <ng-template #slctr>
+    <mat-form-field>
+      <mat-select placeholder="Select team">
+
+        <mat-option *ngFor="let team of localBet.game.teams" [value]="localBet.selectedTeam"
+                    (onSelectionChange)="changedTeam($event, localBet.selectedTeam)">
+          <img md-fab-image [src]="team.iconUrl || ''" [alt]="team.teamName || ''" width="50" height="50">
+          {{ team.teamName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-template>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="localBet" tabindex="2">Confirm bet</button>
+  <button mat-button (click)="onNoClick()" tabindex="-1">Cancel</button>
+</div>
+

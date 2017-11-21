@@ -1,0 +1,27 @@
+<mat-accordion>
+
+  <mat-expansion-panel (opened)="panelOpened()">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        HOME TEAM: {{game.teams[0].teamName}}
+      </mat-panel-title>
+      <mat-panel-description>
+        <img md-fab-image [src]="game.teams[0].iconUrl || ''" [alt]="game.teams[0].teamName || ''" width="50" height="50">
+        VS
+        <img md-fab-image [src]="game.teams[1].iconUrl || ''" [alt]="game.teams[1].teamName || ''" width="50" height="50">
+      </mat-panel-description>
+
+
+      {{game.startDate | date:'yyyy-MM-dd HH:mm a'}}
+      <br>
+    </mat-expansion-panel-header>
+
+    <br>
+    Allow draw bets: {{game.allowDrawBets}}
+    <br> Min bet amount: {{game.minBetAmount}} wei
+    <br> was refunded ?: {{game.wasRefund}}
+    <div id="chart-{{game.externalId}}"></div>
+  </mat-expansion-panel>
+
+
+</mat-accordion>

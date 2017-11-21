@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {TeamService} from "../util/team.service";
+import {TeamService} from "./team.service";
 import {Logger} from "@nsalaun/ng-logger";
 import {Subscription} from "rxjs/Subscription";
-import {SportType, Team} from "../main/main-data-model";
+import {SportType, Team} from "../data-types/data-types.module";
 
 @Component({
   selector: 'app-team-info',
