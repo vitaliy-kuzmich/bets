@@ -11,8 +11,6 @@ import {SportType, Team} from "../data-types/data-types.module";
   encapsulation: ViewEncapsulation.None
 })
 export class TeamInfoComponent implements OnInit, OnDestroy {
-
-
   sportTypeFilter: SportType
   teams: Team[]
 

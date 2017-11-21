@@ -15,6 +15,7 @@ import {Constants} from "../../util/constants";
 import {TeamService} from "../../team-info/team.service";
 import {BetService} from "../../bet/bet.service";
 import {Bet, Game, GameIterator, MatPage, SportType, Team} from "../../data-types/data-types.module";
+import {FilterEvent} from "../../filter/filter/filter.component";
 
 @Component({
   selector: 'app-game-list',
@@ -27,13 +28,12 @@ export class GameListComponent implements OnInit, OnDestroy {
   gameIterator: GameIterator;
   games: Game[];
 
-
   //filter
   teams: Team[]
-  selectedSportType: SportType;
-  selectedTeam: Team;
+  filterData: FilterEvent
+
   page: MatPage = new MatPage(null);
-  gameDate: Date;
+
 
   constructor(public dialog: MatDialog,
               private gameService: GameService,
@@ -46,15 +46,7 @@ export class GameListComponent implements OnInit, OnDestroy {
 
   }
 
-  iteratorChanged() {
-    this.gameService.iterateGames(this.gameIterator)
-      .then(rs => this.games = rs)
-      .catch(err => this.logger.error(err));
-
-  }
-
   openDialog(game: Game): void {
-
     let bet = new Bet({
       game: game,
       amount: game.minBetAmount,
@@ -72,9 +64,6 @@ export class GameListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.selectedSportType = SportType.Football
-    this.filterTeamsList()
-
   }
 
   pageChanged($event: PageEvent) {
@@ -82,55 +71,17 @@ export class GameListComponent implements OnInit, OnDestroy {
     this.page.pageSize = $event.pageSize
     this.page.currentLength = $event.length
     this.filterGamesList()
-
   }
 
-  changeGameDate($event: MatDatepickerInputEvent<Date>) {
-    this.gameDate = $event.value;
-    this.filterGamesList()
-  }
-
-  teamSelected($event: MatOptionSelectionChange, team: Team) {
-    if ($event.source.selected) {
-      this.selectedTeam = team
-      if (this.selectedTeam.id < 0) {
-        this.selectedTeam = null
-      }
-      this.filterGamesList()
-    }
-  }
-
-  sportTypes(): Array<string> {
-    return Constants.sportTypes;
-  }
-
-  sportTypeSelected($event: MatOptionSelectionChange, sportType: SportType) {
-    if ($event.source.selected) {
-      this.selectedSportType = sportType
-      this.filterTeamsList()
-    }
-  }
 
   ngOnDestroy(): void {
     // this.gamesSub.unsubscribe()
   }
 
-  filterTeamsList() {
-    this.teamService.getTeams(this.selectedSportType).then(rs => {
-      this.teams = [new Team({id: -1, teamName: "None"})]
-      this.teams = this.teams.concat(rs);
-      this.filterGamesList()
-
-    }).catch(err => {
-      this.logger.error(this.constructor.name, err)
-    })
-  }
 
   filterGamesList() {
-    this.gameService.getGames(this.selectedSportType, this.page, this.selectedTeam, this.gameDate).then(rs => this.games = rs);
+    this.gameService.getGames(this.filterData, this.page).then(rs => this.games = rs);
   }
 
-  getLogo(sportType: SportType): string {
-    return this.gameService.getLogo(sportType)
-  }
+
 }

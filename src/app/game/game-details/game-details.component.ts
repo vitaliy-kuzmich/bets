@@ -6,7 +6,7 @@ import {BetRate, ChartData, Game} from "../../data-types/data-types.module";
 @Component({
   selector: 'app-game-details',
   templateUrl: './game-details.component.html',
-  styleUrls: ['./game-details.component.css'],
+  styleUrls: ['./game-details.component.css',],
   encapsulation: ViewEncapsulation.None
 })
 export class GameDetailsComponent {
@@ -31,14 +31,14 @@ export class GameDetailsComponent {
 
       if (!rate.teamIdExternal) {
         this.chartData.data.push([
-          "Draw",
+          "Draw (" + rate.rate + ")",
           rate.rate
         ])
       } else {
         let team = this.game.getTeamByExternalId(rate.teamIdExternal)
         if (team) {
           this.chartData.data.push([
-            team.teamName,
+            team.teamName + " (" + rate.rate + ")",
             rate.rate
           ])
         } else {
@@ -74,9 +74,6 @@ export class GameDetailsComponent {
           });
           wrapper.draw();
 
-          /*  const pie_1_chart = new GoogleCharts.api.visualization
-			  .PieChart(document.getElementById());
-			pie_1_chart.draw(GoogleCharts.api.visualization.arrayToDataTable(this.chartData.data));*/
         });
       })
     }

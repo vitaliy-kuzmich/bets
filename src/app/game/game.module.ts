@@ -6,26 +6,27 @@ import {GameService} from "./game.service";
 import {
   MatButtonModule,
   MatCardModule, MatDatepickerModule, MatExpansionModule, MatInputModule, MatPaginatorModule,
-  MatSelectModule
+  MatSelectModule, MatTooltipModule
 } from "@angular/material";
 import {BrowserModule} from "@angular/platform-browser";
 import {FormsModule} from "@angular/forms";
 import {DataTypesModule} from "../data-types/data-types.module";
+import {FilterModule} from "../filter/filter.module";
+import {FilterComponent} from "../filter/filter/filter.component";
 
 @NgModule({
   imports: [
+    FilterModule,
     CommonModule,
     BrowserModule,
     FormsModule,
 
-    MatSelectModule,
-    MatDatepickerModule,
     MatCardModule,
     MatPaginatorModule,
     MatExpansionModule,
-    MatButtonModule,
-    MatInputModule,
     DataTypesModule,
+    MatButtonModule,
+    MatTooltipModule,
   ],
   declarations: [GameListComponent, GameDetailsComponent],
   providers: [GameService],

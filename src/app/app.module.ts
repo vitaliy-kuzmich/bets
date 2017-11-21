@@ -37,6 +37,7 @@ import {BetModule} from "./bet/bet.module";
 import {GameModule} from "./game/game.module";
 import {AppFooterComponent} from './app-footer/app-footer.component';
 import {DataTypesModule} from "./data-types/data-types.module";
+import {FilterModule} from "./filter/filter.module";
 
 const LOG_LEVEL = Level.LOG;
 if (!isDevMode()) {

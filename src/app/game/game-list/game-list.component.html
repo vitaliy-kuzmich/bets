@@ -1,48 +1,6 @@
-<mat-card>
-  <!--
- <mat-card-subtitle>
-
- </mat-card-subtitle>
- <mat-card-title>
-  </mat-card-title>
-  <mat-card-content>
-
-  </mat-card-content>-->
-  Filter games:
-  <mat-card-actions>
-    <mat-form-field>
-      <mat-select placeholder="Select sport type" #sp>
-        <mat-option required *ngFor="let sportType of sportTypes()" [value]="sp"
-                    (onSelectionChange)="sportTypeSelected($event, sportType)">
-          <img md-fab-image [src]="getLogo(sportType) || ''" [alt]="sportType || ''" width="50" height="50">
-          {{ sportType }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-select placeholder="Select team" #t>
-        <mat-option required *ngFor="let tea of teams" [value]="t"
-                    (onSelectionChange)="teamSelected($event, tea)">
-          <img md-fab-image [src]="tea.iconUrl || ''" [alt]="tea.teamName || ''" width="50" height="50">
-          {{ tea.teamName }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Choose a game date" (dateChange)="changeGameDate($event)">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-
-
-  </mat-card-actions>
-
-  <mat-card-footer>
-    <!--<mat-progress-bar mode="indeterminate"></mat-progress-bar>-->
-  </mat-card-footer>
-</mat-card>
+<app-filter [filterName]="'Filter games:'"
+            (findEvent)=" filterData=$event; filterGamesList()"
+            (resetEvent)="games=[]"></app-filter>
 
 
 <mat-card *ngFor="let game of games">

@@ -117,7 +117,7 @@ export class Web3MetaService {
         this.web3Eth.eth.getBalance(acc, (err, balance) => {
           this.accounts.push({
             address: acc,
-            balance: balance.valueOf()
+            balance: this.web3Eth.fromWei(balance.valueOf())
           });
         })
 

@@ -11,12 +11,14 @@ import {
   MatSelectModule
 } from "@angular/material";
 import {DataTypesModule} from "../data-types/data-types.module";
+import {FilterModule} from "../filter/filter.module";
 
 @NgModule({
   imports: [
     CommonModule,
     BrowserModule,
     FormsModule,
+    FilterModule,
 
     MatDialogModule,
     MatFormFieldModule,
@@ -27,6 +29,7 @@ import {DataTypesModule} from "../data-types/data-types.module";
     MatButtonModule,
     MatInputModule,
     DataTypesModule,
+
   ],
   declarations: [BetDialogComponent, BetListComponent],
   entryComponents: [BetDialogComponent],

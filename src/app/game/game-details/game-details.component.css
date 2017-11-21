@@ -1,0 +1,16 @@
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+.container{
+  border: 1px solid #ccc;
+  text-align: center;
+}
+.category{
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background: #ccc;
+  margin: 5px;
+}

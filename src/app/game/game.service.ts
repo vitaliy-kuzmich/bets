@@ -6,6 +6,7 @@ import * as moment from "moment";
 import {TeamService} from "../team-info/team.service";
 import Web3 from 'web3';
 import {Game, GameIterator, MatPage, SportType, Team, Web3Account} from '../data-types/data-types.module';
+import {FilterEvent} from "../filter/filter/filter.component";
 
 @Injectable()
 export class GameService {
@@ -65,8 +66,8 @@ export class GameService {
   }
 
   //TODO: replace mock data with data from server
-  async getGames(sportType: SportType, page: MatPage, team?: Team, gameDate?: Date): Promise<Game[]> {
-    let tms = await this.teamService.getTeams(sportType);
+  async getGames(filter: FilterEvent, page: MatPage): Promise<Game[]> {
+    let tms = await this.teamService.getTeams(filter.selectedSportType);
     let rs = [];
     for (let i = page.currentPage * page.pageSize; i < (page.currentPage * page.pageSize) + page.pageSize; i++) {
       let t1 = tms[this.getRandomArbitrary(1, tms.length - 1)];

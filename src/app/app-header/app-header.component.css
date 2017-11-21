@@ -1,21 +1,3 @@
-div#wrapperHeader {
-  width: 100%;
-  height: 200px; /* height of the background image? */
-  text-align: center;
-}
-
-div#wrapperHeader div#header {
-  width: 1000px;
-  height: 200px;
-  margin: 0 auto;
-}
-
-div#wrapperHeader div#header img {
-  width: 600px; /* the width of the logo image */
-  height: 200px; /* the height of the logo image */
-  margin: 0 auto;
-}
-
-.container {
-  background: #000eff url("http://betlm.ag/wp-content/uploads/sites/3/2014/08/sports-betting-promos-header.jpg") center no-repeat;
+.right{
+  flex: 1; text-align: right;
 }

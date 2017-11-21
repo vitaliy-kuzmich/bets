@@ -6,9 +6,11 @@
         HOME TEAM: {{game.teams[0].teamName}}
       </mat-panel-title>
       <mat-panel-description>
-        <img md-fab-image [src]="game.teams[0].iconUrl || ''" [alt]="game.teams[0].teamName || ''" width="50" height="50">
+        <img md-fab-image [src]="game.teams[0].iconUrl || ''" [alt]="game.teams[0].teamName || ''" width="50"
+             height="50">
         VS
-        <img md-fab-image [src]="game.teams[1].iconUrl || ''" [alt]="game.teams[1].teamName || ''" width="50" height="50">
+        <img md-fab-image [src]="game.teams[1].iconUrl || ''" [alt]="game.teams[1].teamName || ''" width="50"
+             height="50">
       </mat-panel-description>
 
 
@@ -16,11 +18,23 @@
       <br>
     </mat-expansion-panel-header>
 
-    <br>
-    Allow draw bets: {{game.allowDrawBets}}
-    <br> Min bet amount: {{game.minBetAmount}} wei
-    <br> was refunded ?: {{game.wasRefund}}
-    <div id="chart-{{game.externalId}}"></div>
+
+    <img src="/assets/draw_bet.jpg" class="center" matTooltip="Draw bets allowed" *ngIf="game.allowDrawBets"
+         width="70"
+         height="70">
+    <img src="/assets/cancel.png" class="center" matTooltip="Game was refunded" *ngIf="game.wasRefund"
+         width="70"
+         height="70">
+    <img src="/assets/paid.png" class="center" matTooltip="Game was paid" *ngIf="game.payoutLock"
+         width="70"
+         height="70">
+
+    <h2>
+      Min: {{game.minBetAmount}} wei
+    </h2>
+    <span id="chart-{{game.externalId}}"></span>
+
+
   </mat-expansion-panel>
 
 
