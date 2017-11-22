@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SnackNotifyComponent } from './snack-notify.component';
+import {SnackNotifyComponent} from './snack-notify.component';
 
 describe('SnackNotifyComponent', () => {
   let component: SnackNotifyComponent;
@@ -8,9 +8,9 @@ describe('SnackNotifyComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SnackNotifyComponent ]
+      declarations: [SnackNotifyComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

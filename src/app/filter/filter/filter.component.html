@@ -20,7 +20,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field *ngIf="filterData.selectedSportType">
       <mat-select placeholder="Select team" #t>
         <mat-option required *ngFor="let tea of teams" [value]="t"
                     (onSelectionChange)="teamSelected($event, tea)">

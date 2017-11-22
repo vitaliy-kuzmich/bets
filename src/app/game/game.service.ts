@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Logger} from '@nsalaun/ng-logger';
 import {Web3MetaService} from "../util/web3.service";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import * as moment from "moment";
 import {TeamService} from "../team-info/team.service";
 import Web3 from 'web3';
-import {Game, GameIterator, MatPage, SportType, Team, Web3Account} from '../data-types/data-types.module';
+import {Game, GameIterator, MatPage, SportType, Web3Account} from '../data-types/data-types.module';
 import {FilterEvent} from "../filter/filter/filter.component";
 
 @Injectable()
@@ -61,7 +60,7 @@ export class GameService {
     }
   }
 
-  private getRandomArbitrary(min, max) {
+  public getRandomArbitrary(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
   }
 

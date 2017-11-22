@@ -1,4 +1,4 @@
-import {TestBed, inject} from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 import Web3 from 'web3';
 
 import {Web3MetaService} from './web3.service';

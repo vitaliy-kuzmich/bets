@@ -4,9 +4,9 @@ import sportBetsArtifact from '../../../build/contracts/SportBets.json';
 import {Logger} from '@nsalaun/ng-logger';
 import {Observable} from "rxjs/Observable";
 import Web3 from 'web3';
-import {MatSnackBarConfig} from "@angular/material";
 import {NotificationService} from "./notification.service";
 import {Web3Account} from "../data-types/data-types.module";
+import {Constants} from "./constants";
 
 @Injectable()
 export class Web3MetaService {
@@ -53,7 +53,7 @@ export class Web3MetaService {
       this.web3Eth.eth.defaultAccount = this.web3Eth.eth.coinbase
 
       // let addr = sportBetsArtifact.networks[1510652626841].address;
-      let addr = "0x6d4d6f9c1582b21dd3113fb3cfc770d7d4163fae";
+      let addr = Constants.sportBetsAddress;
       this.logger.info(this.constructor.name, "SportBets addr: ", addr)
 
       this.sportsBetContract = this.web3Eth.eth.contract(sportBetsArtifact.abi).at(addr);

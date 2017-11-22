@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {AddTeamComponent} from "./add-team/add-team.component";
 import {AddGameComponent} from "./add-game/add-game.component";
 import {DataTypesModule} from "../data-types/data-types.module";
@@ -11,4 +11,5 @@ import {DataTypesModule} from "../data-types/data-types.module";
   ],
   declarations: [AddTeamComponent, AddGameComponent],
 })
-export class AdminModule { }
+export class AdminModule {
+}

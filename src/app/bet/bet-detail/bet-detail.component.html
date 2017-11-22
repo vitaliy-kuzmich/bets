@@ -1,0 +1,46 @@
+<mat-grid-list cols="5" rowHeight="100px">
+
+  <mat-grid-tile
+    [colspan]="5"
+    [rowspan]="2"
+    [style.background]="'#e3daff'">
+    <h3 class="center">
+      Game date : {{myBet.game.startDate | date:'yyyy-MM-dd HH:mm a' }}
+    </h3>
+
+    <h3 class="center">
+      Your profit : {{myBet.winAmount}}
+    </h3>
+    <h3 class="center">
+      Your bet : {{myBet.betAmount}}
+    </h3>
+
+
+
+    <span *ngIf="myBet.betTeam; then teamBet  else drawBet">if draw bet</span>
+
+    <ng-template #teamBet>
+     <h3 class="center">
+      Team you bet : {{myBet.betTeam.teamName}}
+    </h3>
+
+    <span>
+      <img md-fab-image [src]="myBet.betTeam.iconUrl || ''" [alt]="myBet.betTeam.teamName || ''" width="100" height="100">
+    </span>
+
+    </ng-template>
+    <ng-template #drawBet>
+    <h3 class="center">
+     Draw bet
+    </h3>
+    <span>
+         <img src="/assets/draw_bet.jpg" class="center" matTooltip="Draw Bet"
+              width="100"
+              height="100">
+    </span>
+    </ng-template>
+
+
+
+  </mat-grid-tile>
+</mat-grid-list>

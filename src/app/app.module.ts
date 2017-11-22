@@ -6,19 +6,11 @@ import {HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
 import {MainComponent} from './main/main.component';
 import {
-  MatButtonModule,
-  MatCardModule,
-  MatCheckboxModule,
   MatDatepickerModule,
   MatDialogModule,
   MatExpansionModule,
-  MatFormFieldModule,
-  MatInputModule,
   MatNativeDateModule,
-  MatPaginatorModule,
   MatProgressBarModule,
-  MatRadioModule,
-  MatSelectModule,
   MatSnackBarModule,
   MatTabsModule,
   MatToolbarModule
@@ -37,7 +29,6 @@ import {BetModule} from "./bet/bet.module";
 import {GameModule} from "./game/game.module";
 import {AppFooterComponent} from './app-footer/app-footer.component';
 import {DataTypesModule} from "./data-types/data-types.module";
-import {FilterModule} from "./filter/filter.module";
 
 const LOG_LEVEL = Level.LOG;
 if (!isDevMode()) {
@@ -63,20 +54,12 @@ if (!isDevMode()) {
     MatTabsModule,
     MatExpansionModule,
     MatProgressBarModule,
-    MatPaginatorModule,
     MatToolbarModule,
-    MatRadioModule,
-    MatFormFieldModule,
-    MatCardModule,
-    MatButtonModule,
-    MatInputModule,
-    MatCheckboxModule,
 
     CommonModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    MatSelectModule,
     BrowserAnimationsModule,
     BetModule,
     GameModule,

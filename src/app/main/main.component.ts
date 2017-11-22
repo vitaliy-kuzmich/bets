@@ -4,6 +4,7 @@ import {MatOptionSelectionChange} from "@angular/material";
 import {Subscription} from "rxjs/Subscription";
 import {Logger} from "@nsalaun/ng-logger";
 import {Web3Account} from "../data-types/data-types.module";
+import {Constants} from "../util/constants";
 
 @Component({
   selector: 'app-main',
@@ -13,6 +14,7 @@ import {Web3Account} from "../data-types/data-types.module";
 export class MainComponent implements OnInit, OnDestroy {
   accounts: Web3Account[];
   accountsSubs: Subscription;
+  contractAddress: string = Constants.sportBetsAddress
 
   constructor(private web3: Web3MetaService, private logger: Logger) {
   }
@@ -33,4 +35,5 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.accountsSubs.unsubscribe();
   }
+
 }

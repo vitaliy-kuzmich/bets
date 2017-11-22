@@ -176,13 +176,29 @@ export enum SportType {
   HockeyAllsvenskan = "HockeyAllsvenskan"
 }
 
+export class MyBet {
+  constructor(options: any) {
+    this.game = options.game
+    this.rates = options.rates
+    this.betTeam = options.betTeam
+    this.betAmount = options.betAmount
+    this.winAmount = options.winAmount
+  }
+
+  game: Game
+  rates: BetRate[]
+  betTeam: Team
+  betAmount: number
+  winAmount: number
+}
+
 
 @NgModule({
   imports: [
     CommonModule
   ],
   declarations: [],
- // exports: [SportType, ChartData, GameIterator, Game, Team, Bet, Web3Account, MatPage, BetRate]
+  // exports: [SportType, ChartData, GameIterator, Game, Team, Bet, Web3Account, MatPage, BetRate]
 })
 export class DataTypesModule {
 }

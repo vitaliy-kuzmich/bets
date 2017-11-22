@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Web3MetaService} from "../util/web3.service";
 import {Logger} from "@nsalaun/ng-logger";
-import {Observable} from "rxjs/Observable";
 import Web3 from 'web3';
 import {SportType, Team, Web3Account} from "../data-types/data-types.module";
 

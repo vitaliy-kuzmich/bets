@@ -1,17 +1,26 @@
 import {Injectable} from '@angular/core';
 import {Logger} from "@nsalaun/ng-logger";
 import {Web3MetaService} from "../util/web3.service";
-import {Bet, BetRate} from "../data-types/data-types.module";
+import {Bet, BetRate, MatPage, MyBet} from "../data-types/data-types.module";
 import {NotificationService} from "../util/notification.service";
+import {FilterEvent} from "../filter/filter/filter.component";
+import {GameService} from "../game/game.service";
 
 @Injectable()
 export class BetService {
   sportBetContract: any
 
-  constructor(private logger: Logger, private web3Meta: Web3MetaService, private notServ: NotificationService) {
+  constructor(private logger: Logger,
+              private web3Meta: Web3MetaService,
+              private notServ: NotificationService,
+              private gameService: GameService) {
     this.web3Meta.sportBetContractSubjectO().subscribe((rs) => {
       this.sportBetContract = rs
     })
+  }
+
+  private getRandomDecimal(min, max) {
+    return Math.random() * (max - min);
   }
 
   /**
@@ -25,16 +34,16 @@ export class BetService {
     rs.push(new BetRate({
       teamIdExternal: "1",
       isDraw: false,
-      rate: 0.23
+      rate: this.getRandomDecimal(1, 10)
     }))
     rs.push(new BetRate({
       teamIdExternal: "2",
       isDraw: false,
-      rate: 2.6565
+      rate: this.getRandomDecimal(1, 10)
     }))
     rs.push(new BetRate({
       isDraw: true,
-      rate: 3.6565
+      rate: this.getRandomDecimal(1, 10)
     }))
 
 
@@ -54,6 +63,30 @@ export class BetService {
         this.logger.info(this.constructor.name, "Bet Success TX https://ropsten.etherscan.io/tx/" + rs)
       }
     })
+  }
+
+  //async getGames(filter: FilterEvent, page: MatPage): Promise<Game[]> {
+  async getMyBets(filter: FilterEvent, page: MatPage): Promise<MyBet[]> {
+    let games = await this.gameService.getGames(filter, page);
+
+    let rs = [];
+    for (let i = page.currentPage * page.pageSize; i < (page.currentPage * page.pageSize) + page.pageSize; i++) {
+      let selectedGame = games[this.gameService.getRandomArbitrary(0, games.length - 1)];
+      rs.push(new MyBet({
+        game: selectedGame,
+        rates: (await this.getRate([])),
+        betTeam: this.gameService.getRandomArbitrary(-100, 100) % 2 == 0 ?
+          selectedGame.teams[this.gameService.getRandomArbitrary(0, selectedGame.teams.length - 1)] :
+          null,
+        betAmount:
+          this.gameService.getRandomArbitrary(100, 999999999999),
+        winAmount: this.gameService.getRandomArbitrary(-100, 100)
+      }))
+    }
+
+
+    return rs;
+
   }
 
 }

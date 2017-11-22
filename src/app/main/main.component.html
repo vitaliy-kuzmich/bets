@@ -3,23 +3,41 @@
   <mat-tab label="Games list">
     <app-game-list></app-game-list>
   </mat-tab>
- <!-- <mat-tab label="Admin panel">
-    CONTROLS BELOW MUST BE REMOVED IN PRODUCTION, IT EXISTS ONLY TO TEST/DEMO. THIS FUNCTIONALITY MUST BE MIGRATED TO
-    THE
-    ISOLATED BACKEND SERVICE.
+  <!-- <mat-tab label="Admin panel">
+     CONTROLS BELOW MUST BE REMOVED IN PRODUCTION, IT EXISTS ONLY TO TEST/DEMO. THIS FUNCTIONALITY MUST BE MIGRATED TO
+     THE
+     ISOLATED BACKEND SERVICE.
 
-    <br><br>
+     <br><br>
 
-    REAL DATA:
-    <app-add-team></app-add-team>
-    <app-add-game></app-add-game>
-  </mat-tab>-->
+     REAL DATA:
+     <app-add-team></app-add-team>
+     <app-add-game></app-add-game>
+   </mat-tab>-->
 
   <mat-tab label="My bets">
     <app-bet-list></app-bet-list>
   </mat-tab>
   <mat-tab label="Help">
-    INFO
+    <h3> This is hybrid sport bets application based on EVM blockchain technology.</h3><br>
+    <h3>Games List </h3>All of the data returned from classic backend service. Only bets processed by metamask plugin.
+    Bet message include next data fields: gameId, teamId, bet amount. <br> After game match ends, backend
+    do calculation and sends message with payments to the ethereum network.
+    <br>
+    <h3>My bets</h3> Page that contains all bets that you sent to the ethereum network.
+    <h3>Since EVM has no possibility to calc decimal, currently backend service do calculations.</h3>
+    <br>
+    <h3>RULES:</h3>
+    - When game canceled, sums refunded as is, without any changes.<br>
+    - When 1 team wins, win and lose sums would depend on game scores,
+    as much difference, win and lost sums would be more significant, including case when score 0:1
+    then lose bets would receive 0, because in percentage the difference are 100%.<br>
+    - When draw score won, then from each bet that did not put on draw, withdraw -(100%/amount of teams(usually it is
+    2)) of total bet sum <br>
+    - When draw score lost, then draw bets would receive -50%(same as described upper) of total bet sum<br>
+    Information how to setup metamask plugin you can find at google.com <br>
+    <h3>Ethereum contract address(Ropsten): {{contractAddress}}</h3>
+    <h3>bet fee: 100500%</h3>
   </mat-tab>
   <mat-tab label="Contact">
     Contacts

@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {TeamService} from "./team.service";
 import {Logger} from "@nsalaun/ng-logger";
-import {Subscription} from "rxjs/Subscription";
 import {SportType, Team} from "../data-types/data-types.module";
 
 @Component({
@@ -21,7 +20,7 @@ export class TeamInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-     this.teamService.getTeams(this.sportTypeFilter).then(rs => this.teams = rs);
+    this.teamService.getTeams(this.sportTypeFilter).then(rs => this.teams = rs);
   }
 
   ngOnDestroy(): void {

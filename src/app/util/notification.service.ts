@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 import {MatSnackBar, MatSnackBarConfig} from "@angular/material";
-import {SnackNotifyComponent} from "../main/snack-notify/snack-notify.component";
-import {SnackErrorComponent} from "../main/snack-error/snack-error.component";
 import {Logger} from "@nsalaun/ng-logger";
 
 @Injectable()

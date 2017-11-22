@@ -2,26 +2,11 @@
             (findEvent)=" filterData=$event; filterGamesList()"
             (resetEvent)="games=[]"></app-filter>
 
+<br>
+<ng-container *ngFor="let game of games">
+  <app-game-details [game]="game"></app-game-details>
 
-<mat-card *ngFor="let game of games">
-  <mat-card-subtitle>
-
-  </mat-card-subtitle>
-  <mat-card-title>
-
-  </mat-card-title>
-  <mat-card-content>
-    <app-game-details [game]="game"></app-game-details>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-raised-button color="warn" (click)="openDialog(game)">Make bet</button>
-  </mat-card-actions>
-
-
-  <mat-card-footer>
-    <!--<mat-progress-bar mode="indeterminate"></mat-progress-bar>-->
-  </mat-card-footer>
-</mat-card>
+</ng-container>
 <p *ngIf="games">
   <!-- [length]="games.length"-->
   <mat-paginator [length]="100"

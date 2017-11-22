@@ -1,7 +1,12 @@
 import {Component, Input, ViewEncapsulation} from '@angular/core';
 import {BetService} from "../../bet/bet.service";
 import {GoogleCharts} from 'google-charts';
-import {BetRate, ChartData, Game} from "../../data-types/data-types.module";
+import {Bet, BetRate, ChartData, Game} from "../../data-types/data-types.module";
+import {BetDialogComponent} from "../../bet/bet-dialog/bet-dialog.component";
+import {MatDialog, MatDialogConfig} from "@angular/material";
+import {Logger} from "@nsalaun/ng-logger";
+
+declare var google;
 
 @Component({
   selector: 'app-game-details',
@@ -16,14 +21,13 @@ export class GameDetailsComponent {
   rates: BetRate[];
   chartData: ChartData;
 
-
-  constructor(private betService: BetService) {
+  constructor(private betService: BetService,
+              public dialog: MatDialog,
+              private logger: Logger) {
     this.chartData = new ChartData()
-
   }
 
   ngOnInit() {
-
   }
 
   fillChartData() {
@@ -42,8 +46,7 @@ export class GameDetailsComponent {
             rate.rate
           ])
         } else {
-          console.error("Cant find team")
-          console.dir(rate)
+          this.logger.error(this.constructor.name, "Cant load Team")
         }
       }
     })
@@ -69,6 +72,7 @@ export class GameDetailsComponent {
               vAxis: {textPosition: 'out'},
               legend: {position: 'right', textStyle: {fontSize: '18'}},
               tooltip: {textStyle: {fontSize: '16'}},
+              backgroundColor: "#e3daff",
             },
             containerId: 'chart-' + this.game.externalId
           });
@@ -77,6 +81,23 @@ export class GameDetailsComponent {
         });
       })
     }
+  }
+
+  openDialog(game: Game): void {
+    let bet = new Bet({
+      game: game,
+      amount: game.minBetAmount,
+      selectedTeam: game.teams[0]
+    })
+    let cfg = new MatDialogConfig<Bet>();
+    cfg.data = bet;
+    let dialogRef = this.dialog.open(BetDialogComponent, cfg);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && (result.selectedTeam || result.isDraw)) {
+        this.betService.makeBet(result);
+      }
+    });
   }
 
 }
