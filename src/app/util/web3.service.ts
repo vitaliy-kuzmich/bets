@@ -7,6 +7,7 @@ import Web3 from 'web3';
 import {NotificationService} from "./notification.service";
 import {Web3Account} from "../data-types/data-types.module";
 import {Constants} from "./constants";
+import {LoadingService} from "./loading.service";
 
 @Injectable()
 export class Web3MetaService {
@@ -36,7 +37,10 @@ export class Web3MetaService {
   }
 
 
-  constructor(private logger: Logger, private notificationService: NotificationService) {
+  constructor(private logger: Logger,
+              private notificationService: NotificationService,
+              private loadingService: LoadingService) {
+    loadingService.triggerGlobalLoader(this.constructor.name, true)
     Web3.providers.HttpProvider.prototype.sendAsync = Web3.providers.HttpProvider.prototype.send;
 
     /*    Web3.toAsciiOriginal = Web3.toAscii;
@@ -73,6 +77,7 @@ export class Web3MetaService {
       /*   let cfg = new MatSnackBarConfig()
 		 cfg.duration = 10000
 		 cfg.announcementMessage = "Can't connect to MetaMask!"*/
+      loadingService.triggerGlobalLoader(this.constructor.name, false)
       this.notificationService.notifySimple("Can't connect to MetaMask!", 10000)
 
       // testrpc
@@ -112,6 +117,7 @@ export class Web3MetaService {
       if (accs.length == 0) {
 
         this.notificationService.notifySimple("Please login to MetaMask, and press f5", 5000)
+        this.loadingService.triggerGlobalLoader(this.constructor.name, false)
       }
       accs.forEach(acc => {
         this.web3Eth.eth.getBalance(acc, (err, balance) => {
@@ -123,6 +129,7 @@ export class Web3MetaService {
 
 
         this.accountsSubject.next(this.accounts);
+        this.loadingService.triggerGlobalLoader(this.constructor.name, false)
       })
 
     })

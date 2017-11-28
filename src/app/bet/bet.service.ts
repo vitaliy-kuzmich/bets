@@ -5,6 +5,7 @@ import {Bet, BetRate, MatPage, MyBet} from "../data-types/data-types.module";
 import {NotificationService} from "../util/notification.service";
 import {FilterEvent} from "../filter/filter/filter.component";
 import {GameService} from "../game/game.service";
+import {LoadingService} from "../util/loading.service";
 
 @Injectable()
 export class BetService {
@@ -13,7 +14,8 @@ export class BetService {
   constructor(private logger: Logger,
               private web3Meta: Web3MetaService,
               private notServ: NotificationService,
-              private gameService: GameService) {
+              private gameService: GameService,
+              private loadingService: LoadingService) {
     this.web3Meta.sportBetContractSubjectO().subscribe((rs) => {
       this.sportBetContract = rs
     })
@@ -30,6 +32,7 @@ export class BetService {
    */
   async getRate(gameIds: number[]): Promise<BetRate[]> {
 
+    this.loadingService.triggerQueryLoading(this.constructor.name, true)
     let rs = [];
     rs.push(new BetRate({
       teamIdExternal: "1",
@@ -46,15 +49,17 @@ export class BetService {
       rate: this.getRandomDecimal(1, 10)
     }))
 
-
+    this.loadingService.triggerQueryLoading(this.constructor.name, false)
     return rs;
 
   }
 
   async makeBet(bet: Bet) {
+    this.loadingService.triggerQueryLoading(this.constructor.name, true)
     let tx = this.sportBetContract.bet(bet.game.id, bet.selectedTeam.id, bet.isDraw, {
       gas: 4465034
     }, (err, rs) => {
+      this.loadingService.triggerQueryLoading(this.constructor.name, false)
       if (err) {
         this.notServ.notifySimple("Failed to bet!", 5000)
         this.logger.error(this.constructor.name, "Failed to bet", err)
@@ -67,6 +72,7 @@ export class BetService {
 
   //async getGames(filter: FilterEvent, page: MatPage): Promise<Game[]> {
   async getMyBets(filter: FilterEvent, page: MatPage): Promise<MyBet[]> {
+    this.loadingService.triggerQueryLoading(this.constructor.name, true)
     let games = await this.gameService.getGames(filter, page);
 
     let rs = [];
@@ -83,6 +89,7 @@ export class BetService {
         winAmount: this.gameService.getRandomArbitrary(-100, 100)
       }))
     }
+    this.loadingService.triggerQueryLoading(this.constructor.name, false)
 
 
     return rs;

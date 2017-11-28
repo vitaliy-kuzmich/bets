@@ -3,8 +3,13 @@
   <span>Sport bets</span>
   <span class="right" *ngIf="accounts&&accounts.length>0">Base wallet account: {{accounts[0].address}}   ({{accounts[0].balance}} eth)</span>
 
+
   <!-- &lt;!&ndash; This fills the remaining space of the current row &ndash;&gt;
    <span class="example-fill-remaining-space"></span>
 
    <span>Right Aligned Text</span>-->
 </mat-toolbar>
+
+<br>
+<mat-progress-bar mode="query" *ngIf="showQueryIndicator"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" *ngIf="showGlobalLoader"></mat-progress-bar>

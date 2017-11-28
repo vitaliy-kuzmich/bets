@@ -9,8 +9,7 @@ import {
   MatDatepickerModule,
   MatDialogModule,
   MatExpansionModule,
-  MatNativeDateModule,
-  MatProgressBarModule,
+  MatNativeDateModule, MatProgressBarModule,
   MatSnackBarModule,
   MatTabsModule,
   MatToolbarModule
@@ -29,6 +28,7 @@ import {BetModule} from "./bet/bet.module";
 import {GameModule} from "./game/game.module";
 import {AppFooterComponent} from './app-footer/app-footer.component';
 import {DataTypesModule} from "./data-types/data-types.module";
+import {LoadingService} from "./util/loading.service";
 
 const LOG_LEVEL = Level.LOG;
 if (!isDevMode()) {
@@ -72,7 +72,8 @@ if (!isDevMode()) {
   providers: [
     NotificationService,
     Web3MetaService,
-    TeamService],
+    TeamService,
+    LoadingService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

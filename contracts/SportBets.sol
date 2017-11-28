@@ -156,9 +156,9 @@ contract SportBets {
   *
   */
   function payout(uint _gameId, uint[] _drawBetToPayouts, uint[] _teamIdsLimits, uint[] _payoutAmount) isOwner public {
-    //payout to draw bidders
+
     require(!gamesMap[_gameId].payoutLock
-    // && now > gamesMap[_gameId].endDate
+     && now > gamesMap[_gameId].endDate
     && !gamesMap[_gameId].wasRefund);
 
     gamesMap[_gameId].payoutLock = true;
@@ -181,7 +181,7 @@ contract SportBets {
   function bet(uint _gameId, uint _teamId, bool _isDraw) payable public {
     require(
     msg.value >= gamesMap[_gameId].minBetAmount &&
-    //now < gamesMap[_gameId].startDate &&
+    now < gamesMap[_gameId].startDate &&
     !gamesMap[_gameId].wasRefund &&
     _isDraw ? gamesMap[_gameId].allowDrawBets : true
     );

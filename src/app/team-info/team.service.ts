@@ -3,6 +3,7 @@ import {Web3MetaService} from "../util/web3.service";
 import {Logger} from "@nsalaun/ng-logger";
 import Web3 from 'web3';
 import {SportType, Team, Web3Account} from "../data-types/data-types.module";
+import {LoadingService} from "../util/loading.service";
 
 @Injectable()
 export class TeamService {
@@ -10,7 +11,10 @@ export class TeamService {
   private accs: Web3Account[]
   private web3: Web3;
 
-  constructor(private logger: Logger, private web3Meta: Web3MetaService) {
+  constructor(private logger: Logger,
+              private web3Meta: Web3MetaService,
+              private loadingService: LoadingService) {
+    loadingService.triggerGlobalLoader(this.constructor.name, true)
 
     this.logger.info(this.constructor.name, "subscribing for contract :")
     this.web3Meta.sportBetContractSubjectO().subscribe((rs) => {
@@ -23,10 +27,12 @@ export class TeamService {
     this.web3Meta.web3SubjectO().subscribe(rs => {
       this.web3 = rs
     })
+    loadingService.triggerGlobalLoader(this.constructor.name, false)
   }
 
 
   async addNewTeam(team: Team) {
+    this.loadingService.triggerQueryLoading(this.constructor.name, true)
     //32 _sportType, bytes32 _teamName, bytes32 _description, bytes32 _externalId
     this.sportBetContract.addTeam(
       team.sportType,
@@ -36,12 +42,13 @@ export class TeamService {
         gas: 4465034,
         from: this.accs[0].address
       }, (err, rs) => {
+        this.loadingService.triggerQueryLoading(this.constructor.name, false)
         this.logger.info(this.constructor.name, "Add new team TX https://ropsten.etherscan.io/tx/" + rs)
       });
   }
 
   async getTeams(sportType: SportType): Promise<Team[]> {
-
+    this.loadingService.triggerQueryLoading(this.constructor.name, true)
     let rs = []
     for (let i = 0; i < 10; i++) {
       rs.push(new Team({
@@ -53,6 +60,8 @@ export class TeamService {
         iconUrl: "http://freevectorlogo.net/wp-content/uploads/2012/12/manchester-united-logo-vector.png"
       }))
     }
+
+    this.loadingService.triggerQueryLoading(this.constructor.name, false)
 
     return rs;
   }

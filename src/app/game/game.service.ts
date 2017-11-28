@@ -6,6 +6,7 @@ import {TeamService} from "../team-info/team.service";
 import Web3 from 'web3';
 import {Game, GameIterator, MatPage, SportType, Web3Account} from '../data-types/data-types.module';
 import {FilterEvent} from "../filter/filter/filter.component";
+import {LoadingService} from "../util/loading.service";
 
 @Injectable()
 export class GameService {
@@ -14,7 +15,10 @@ export class GameService {
   private web3: Web3;
 
 
-  constructor(private logger: Logger, private web3Meta: Web3MetaService, private teamService: TeamService) {
+  constructor(private logger: Logger,
+              private web3Meta: Web3MetaService,
+              private teamService: TeamService,
+              private loadingService: LoadingService) {
     this.web3Meta.sportBetContractSubjectO().subscribe((rs) => {
       this.sportBetContract = rs
     })
@@ -66,6 +70,7 @@ export class GameService {
 
   //TODO: replace mock data with data from server
   async getGames(filter: FilterEvent, page: MatPage): Promise<Game[]> {
+    this.loadingService.triggerQueryLoading(this.constructor.name, true)
     let tms = await this.teamService.getTeams(filter.selectedSportType);
     let rs = [];
     for (let i = page.currentPage * page.pageSize; i < (page.currentPage * page.pageSize) + page.pageSize; i++) {
@@ -93,11 +98,13 @@ export class GameService {
         allowDrawBets: true,
       }))
     }
+    this.loadingService.triggerQueryLoading(this.constructor.name, false)
 
     return rs;
   }
 
   addGame(game: Game) {
+    this.loadingService.triggerQueryLoading(this.constructor.name, true)
 
     let result = this.sportBetContract.addGame.sendTransaction(game.sportType, [game.teams[0].id, game.teams[1].id],
       game.startDate, game.endDate, game.allowDrawBets, game.minBetAmount, game.description, game.externalId,
@@ -111,6 +118,7 @@ export class GameService {
       this.logger.error(err)
     })
     this.logger.info(this.constructor.name, "Add new game match TX " + result)
+    this.loadingService.triggerQueryLoading(this.constructor.name, false)
 
   }
 
