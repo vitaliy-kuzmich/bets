@@ -8,143 +8,51 @@ contract SportBets {
 
   function SportBets() payable public {
     owner = msg.sender;
-    idGen = 1;
   }
   modifier isOwner{
     require(msg.sender == owner);
     _;
+  }
+  modifier gameExists(uint _gameId){
 
+    require(gamesMap[_gameId].externalId != 0);
+    _;
   }
 
   struct Bet {
-  address addr;
-  uint amount;
+    address addr;
+    uint amount;
   }
 
-  struct Team {
-  uint id;
-  bytes32 teamName;
-  bytes32 description;
-  bytes32 sportType;
-  bytes32 externalId;
-
-  }
 
   struct Game {
-  uint id;
-  uint[] teamIds;
-  mapping (uint => Bet[]) bets;
+    uint[] teamIds;
+    mapping(uint => Bet[]) bets;
 
-  //game status
-  Bet[] drawBets;
-  bool payoutLock;
-  bool wasRefund;
-  //end game status
+    //game status
+    Bet[] drawBets;
+    bool payoutLock;
+    bool wasRefund;
+    //end game status
 
-  uint startDate;
-  uint endDate;
+    uint startDate;
+    uint endDate;
 
-  bytes32 description;
-  bytes32 sportType;
-  bytes32 externalId;
+    bytes32 description;
+    bytes32 sportType;
+    uint externalId;
 
-  uint minBetAmount;
-  bool allowDrawBets;
+    uint minBetAmount;
+    bool allowDrawBets;
 
   }
 
   address public owner;
 
-  uint idGen;
 
-  //sport type to teams
-  mapping (uint => Team) teams;
-
-  uint[] public teamIds;
-
-  mapping (uint => Game) gamesMap;
+  mapping(uint => Game) gamesMap;
 
   uint[] public gameIds;
-
-
-  function getTeam(uint[] _ids) public view
-  returns (
-  uint[],
-  bytes32[],
-  bytes32[],
-  bytes32[]){
-    uint[] memory resultID = new uint[](_ids.length);
-    bytes32[] memory resultname = new bytes32[](_ids.length);
-    bytes32[] memory resultdesc = new bytes32[](_ids.length);
-    bytes32[] memory exIds = new bytes32[](_ids.length);
-
-    for (uint i = 0; i < _ids.length; i++) {
-      Team storage t1 = teams[_ids[i]];
-      resultID[i] = t1.id;
-      resultname[i] = t1.teamName;
-      resultdesc[i] = t1.description;
-      exIds[i] = t1.externalId;
-    }
-    return (resultID, resultname, resultdesc, exIds);
-
-  }
-
-  function iterateTeams(uint _startIndex, bytes32 _filterSportType) public view
-  returns (
-  uint[],
-  bytes32[],
-  bytes32[],
-  bytes32[]){
-    uint[] memory tIds = new uint[](10);
-    uint counter;
-    for (uint i = _startIndex; i < teamIds.length; i++) {
-      if (teams[teamIds[i]].sportType == _filterSportType) {
-        if (counter == 10) {
-          break;
-        }
-        tIds[counter] = teamIds[i];
-        counter++;
-      }
-    }
-
-    return getTeam(tIds);
-  }
-
-
-  function addTeam(bytes32 _sportType, bytes32 _teamName, bytes32 _description, bytes32 _externalId) public isOwner {
-
-    require(teams[idGen].id == 0);
-
-    teams[idGen] = Team({
-    id : idGen,
-    sportType : _sportType,
-    teamName : _teamName,
-    description : _description,
-    externalId : _externalId
-    });
-
-    teamIds.push(idGen);
-    idGen++;
-
-  }
-
-  function getTeamsLen() public view returns (uint){
-    return teamIds.length;
-
-  }
-
-
-  function deleteTeam(uint _id) public isOwner {
-    delete teams[_id];
-    for (uint i = 0; i < teamIds.length; i++) {
-      if (teamIds[i] == _id) {
-        teamIds[i] = teamIds[teamIds.length - 1];
-        teamIds.length--;
-        break;
-      }
-    }
-  }
-
 
   function changeOwner() public isOwner returns (address) {
     owner = msg.sender;
@@ -158,7 +66,7 @@ contract SportBets {
   function payout(uint _gameId, uint[] _drawBetToPayouts, uint[] _teamIdsLimits, uint[] _payoutAmount) isOwner public {
 
     require(!gamesMap[_gameId].payoutLock
-     && now > gamesMap[_gameId].endDate
+    //&& now > gamesMap[_gameId].endDate
     && !gamesMap[_gameId].wasRefund);
 
     gamesMap[_gameId].payoutLock = true;
@@ -180,22 +88,33 @@ contract SportBets {
    */
   function bet(uint _gameId, uint _teamId, bool _isDraw) payable public {
     require(
-    msg.value >= gamesMap[_gameId].minBetAmount &&
-    now < gamesMap[_gameId].startDate &&
-    !gamesMap[_gameId].wasRefund &&
-    _isDraw ? gamesMap[_gameId].allowDrawBets : true
+      msg.value >= gamesMap[_gameId].minBetAmount &&
+      // now < gamesMap[_gameId].startDate &&
+      !gamesMap[_gameId].wasRefund &&
+      _isDraw ? gamesMap[_gameId].allowDrawBets : true
     );
+
+    if (!_isDraw) {
+      var teamMatch = false;
+      for (uint i = 0; i < gamesMap[_gameId].teamIds.length; i++) {
+        if (gamesMap[_gameId].teamIds[i] == _teamId) {
+          teamMatch = true;
+        }
+      }
+      require(teamMatch);
+    }
+
     if (_isDraw) {
       gamesMap[_gameId].drawBets.push(Bet({
-      addr : msg.sender,
-      amount : msg.value
-      }));
+        addr : msg.sender,
+        amount : msg.value
+        }));
     }
     else {
       gamesMap[_gameId].bets[_teamId].push(Bet({
-      addr : msg.sender,
-      amount : msg.value
-      }));
+        addr : msg.sender,
+        amount : msg.value
+        }));
     }
   }
 
@@ -203,7 +122,8 @@ contract SportBets {
   /**
 returns teamId, betAmount, latestIndex - draw bets
 */
-  function getBetRate(uint _gameId) public view returns (uint[], uint[]) {
+  function getBetRate(uint _gameId) gameExists(_gameId) public view returns (uint[], uint[]) {
+
     uint size = gamesMap[_gameId].teamIds.length;
     uint[] memory resultBetsRes = new uint[](size + 1);
     uint[] memory teamIdsRes = new uint[](size + 1);
@@ -286,29 +206,28 @@ returns teamId, betAmount, latestIndex - draw bets
    */
 
   function addGame(
-  bytes32 _sportType,
-  uint[] _teamIds,
-  uint _startDate,
-  uint _endDate,
-  bool _allowDraw,
-  uint _minBetAmount,
-  bytes32 _description,
-  bytes32 _externalId
+    bytes32 _sportType,
+    uint[] _teamIds,
+    uint _startDate,
+    uint _endDate,
+    bool _allowDraw,
+    uint _minBetAmount,
+    bytes32 _description,
+    uint _externalId
   ) public isOwner
   {
+    require(gamesMap[_externalId].externalId == 0);
 
-    gamesMap[idGen].id = idGen;
-    gamesMap[idGen].teamIds = _teamIds;
-    gamesMap[idGen].startDate = _startDate;
-    gamesMap[idGen].endDate = _endDate;
-    gamesMap[idGen].description = _description;
-    gamesMap[idGen].sportType = _sportType;
-    gamesMap[idGen].minBetAmount = _minBetAmount;
-    gamesMap[idGen].allowDrawBets = _allowDraw;
-    gamesMap[idGen].externalId = _externalId;
+    gamesMap[_externalId].teamIds = _teamIds;
+    gamesMap[_externalId].startDate = _startDate;
+    gamesMap[_externalId].endDate = _endDate;
+    gamesMap[_externalId].description = _description;
+    gamesMap[_externalId].sportType = _sportType;
+    gamesMap[_externalId].minBetAmount = _minBetAmount;
+    gamesMap[_externalId].allowDrawBets = _allowDraw;
+    gamesMap[_externalId].externalId = _externalId;
 
-    gameIds.push(idGen);
-    idGen++;
+    gameIds.push(_externalId);
 
   }
 
@@ -318,10 +237,9 @@ returns teamId, betAmount, latestIndex - draw bets
    */
 
   function iterateGames(uint _startIndex, bytes32 _filterSportType, uint _filterStartDateBefore, bool _allowDraw) public view returns (
-  uint[],
-  uint[],
-  bytes32[],
-  bytes32[]
+    uint[],
+    uint[],
+    bytes32[]
   ){
 
     uint j = 0;
@@ -342,7 +260,6 @@ returns teamId, betAmount, latestIndex - draw bets
     uint[] memory ids = new uint[](size);
     uint[]memory startDates = new uint[](size);
     bytes32[] memory descr = new bytes32[](size);
-    bytes32[] memory exId = new bytes32[](size);
 
     for (i = _startIndex; i < gameIds.length; i++) {
       if (j == size) {
@@ -352,16 +269,15 @@ returns teamId, betAmount, latestIndex - draw bets
       if (game.startDate <= _filterStartDateBefore
       && _filterSportType == game.sportType
       && _allowDraw == game.allowDrawBets) {
-        ids[j] = game.id;
+        ids[j] = game.externalId;
         startDates[j] = game.startDate;
         descr[j] = game.description;
-        exId[j] = game.externalId;
         j++;
       }
     }
 
 
-    return (ids, startDates, descr, exId);
+    return (ids, startDates, descr);
 
   }
 
@@ -370,15 +286,15 @@ returns teamId, betAmount, latestIndex - draw bets
    */
 
   function getGameDetails(uint _id) public view returns (
-  uint[] teamIds_,
+    uint[] teamIds_,
 
-  bool payoutLock_,
-  bool wasRefund_,
+    bool payoutLock_,
+    bool wasRefund_,
 
-  uint endDate_,
-  uint minBetAmount_,
+    uint endDate_,
+    uint minBetAmount_,
 
-  bool allowDrawBets_
+    bool allowDrawBets_
   ){
     teamIds_ = gamesMap[_id].teamIds;
 
