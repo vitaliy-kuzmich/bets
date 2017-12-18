@@ -63,36 +63,52 @@ contract SportBets {
   * Calculating done externally because of lack of decimal arithmetics. It makes sure that payments was not done before.
   *
   */
-  function payout(uint _gameId, uint[] _drawBetToPayouts, uint[] _teamIdsLimits, uint[] _payoutAmount) isOwner public {
+  function payout(uint _gameId, uint[] _drawBetToPayouts, uint[] _payoutAmount) isOwner public {
 
     require(!gamesMap[_gameId].payoutLock
     //&& now > gamesMap[_gameId].endDate
     && !gamesMap[_gameId].wasRefund);
 
     gamesMap[_gameId].payoutLock = true;
+
     for (uint i = 0; i < _drawBetToPayouts.length; i++) {
       gamesMap[_gameId].drawBets[i].addr.transfer(_drawBetToPayouts[i]);
     }
+
+
+    uint teamIdIndex = 0;
+    uint betsIndex = 0;
+    Bet[] memory currentBets = gamesMap[_gameId].bets[gamesMap[_gameId].teamIds[teamIdIndex]];
     //payout the rest bidders
-    for (i = 0; i < _teamIdsLimits.length; i++) {
-      for (uint j = i == 0 ? 0 : _teamIdsLimits[i - 1]; j < _teamIdsLimits[i]; j++) {
-        for (uint i1 = 0; i1 < gamesMap[_gameId].bets[j].length; i1++) {
-          gamesMap[_gameId].bets[j][i1].addr.transfer(_payoutAmount[j]);
-        }
+
+    for (i = 0; i < _payoutAmount.length; i++) {
+
+      if (currentBets.length == betsIndex && i < _payoutAmount.length - 1) {
+        betsIndex = 0;
+        teamIdIndex++;
+        require(teamIdIndex < gamesMap[_gameId].teamIds.length);
+        currentBets = gamesMap[_gameId].bets[gamesMap[_gameId].teamIds[teamIdIndex]];
       }
+
+      currentBets[betsIndex].addr.transfer(_payoutAmount[i]);
+      betsIndex++;
+
+
     }
+
 
   }
   /**
   putting money on game/team/draw
    */
   function bet(uint _gameId, uint _teamId, bool _isDraw) payable public {
-    require(
-      msg.value >= gamesMap[_gameId].minBetAmount &&
+    require(msg.value >= gamesMap[_gameId].minBetAmount &&
       // now < gamesMap[_gameId].startDate &&
-      !gamesMap[_gameId].wasRefund &&
-      _isDraw ? gamesMap[_gameId].allowDrawBets : true
-    );
+      !gamesMap[_gameId].wasRefund);
+
+    if (_isDraw) {
+      require(gamesMap[_gameId].allowDrawBets);
+    }
 
     if (!_isDraw) {
       var teamMatch = false;
@@ -166,7 +182,7 @@ returns teamId, betAmount, latestIndex - draw bets
   /**
   used internally in order to fill bets data
    */
-  function fillBets(uint _gameId, address[] memory bidders, uint[] memory amounts) view returns (address[], uint[]) {
+  function fillBets(uint _gameId, address[] memory bidders, uint[] memory amounts) public view returns (address[], uint[]) {
     uint counter = 0;
     for (uint i = 0; i < gamesMap[_gameId].teamIds.length; i++) {
       for (uint j = 0; j < gamesMap[_gameId].bets[gamesMap[_gameId].teamIds[i]].length; j++) {

@@ -85,6 +85,12 @@ export class Web3MetaService {
       // this.logger.info(this.constructor.name, "using TestRPC")
     }
 
+/*    let logData = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'))
+    var sbContract = logData.eth.contract(sportBetsArtifact.abi).at(Constants.sportBetsAddress);
+    console.dir(sbContract.bet.getData(4, 2, false))
+
+    console.log(logData.eth.getTransactionCount(logData.eth.accounts[0]))*/
+
 
   }
 
