@@ -10,7 +10,7 @@ Architecture:
 - public backend, which is not implemented. Should interact with UI and isolated backend.
 
 Details:
-It should create games in the blockchain on demand, to prevent losing on not pupular games. Also DAPP Game creation should be protected by captcha.
+It should create games in the blockchain on demand, to prevent losing on not popular games. Also DAPP Game creation should be protected by captcha.
 
 
 There is only 3/4 of overall project ready. This repo contains smart contract and UI code. Isolated backend : https://github.com/vitaliy-kuzmich/bets-backend
