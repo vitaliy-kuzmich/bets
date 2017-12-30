@@ -4,7 +4,7 @@ But after I've implemented the last part we agreed, client told that he requeste
 Since I did not sign any NDA and client broke our voice agreement, I have rights for this project. Thats all.
 
 Architecture:
-- UI(latest Angular) should be integrated with public backend(which is not implemented), and use bet function from smart contract. Bet event should be added.
+- UI(latest Angular,DEMO: http://wizardly-hugle-9ff596.bitballoon.com) should be integrated with public backend(which is not implemented), and use bet function from smart contract. Bet event should be added.
 - DAPP solidity smart contract
 - isolated backend(node.js), that acting as a simple wrapper around smart contract. 
 - public backend, which is not implemented. Should interact with UI and isolated backend.
