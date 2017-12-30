@@ -1,34 +1,19 @@
-<<<<<<< HEAD
-# README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+The history of this project simple. There were some client that asked me to implement sports bets on ethereum (solidity)smart contracts.
+But after I've implemented the last part we agreed, client told that he requested only 1/4 of all project, and did not pay for the last part. At really he asked to make 3/4 of the project.
+Since I did not sign any NDA and client broke our voice agreement, I have rights for this project. Thats all.
 
-### What is this repository for? ###
+Architecture:
+- UI should be integrated with public backend(which is not implemented), and use bet function from smart contract. Bet event should be added.
+- DAPP solidity smart contract
+- isolated backend, that acting as a simple wrapper around smart contract. 
+- public backend, which is not implemented. Should interact with UI and isolated backend.
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Details:
+It should create games in the blockchain on demand, to prevent losing on not pupular games. Also DAPP Game creation should be protected by captcha.
 
-### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+There is only 3/4 of overall project ready. This repo contains smart contract and UI code. Isolated backend : https://github.com/vitaliy-kuzmich/bets-backend
 
-### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
-=======
-# bets
-ethereum sports bet
->>>>>>> 7983adcc2113642c3ac6c6daeb6f297354cd91ba
+This is free software.  
